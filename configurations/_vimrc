@@ -1,0 +1,184 @@
+source $VIMRUNTIME/vimrc_example.vim
+" source $VIMRUNTIME/FuckInstance.vim
+
+""""""""""""""""""""""""""""""""""""""""""""
+"                   General                "
+""""""""""""""""""""""""""""""""""""""""""""
+set nocompatible
+set nobackup
+set noundofile
+set noswapfile
+set history=1024
+set autochdir
+set whichwrap=b,s,<,>,[,]
+set nobomb
+set backspace=indent,eol,start whichwrap+=<,>,[,]
+" vim 的默认寄存器和系统剪切板共享
+set clipboard+=unnamed
+" 设置alt键不映射到菜单栏
+set winaltkeys=no
+
+""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""  Lang & Encoding  """"""""""""""
+""""""""""""""""""""""""""""""""""""""""""""
+set fileencodings=utf-8,chinese,latin-1,gbk,gb18030,gk2312,cp936
+set encoding=utf-8 
+set langmenu=zh_CN
+
+
+""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""   Format   """""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""
+set autoindent
+set smartindent
+set tabstop=4
+set softtabstop=4
+set foldmethod=indent
+set expandtab     " 使用空格代替tab.
+set shiftwidth=4  " 自动缩进的宽度。 
+
+
+""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""   KeyMaps   """"""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""
+" switch windows
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+map <C-h> <C-w>h
+" buffer map
+nnoremap <silent> [b :bprevious<CR>
+nnoremap <silent> ]b :bnext<CR>
+nnoremap <silent> [B :bfirst<CR>
+nnoremap <silent> ]B :blast<CR>
+
+
+""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""   Functions   """""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""
+set diffexpr=MyDiff()
+function MyDiff()
+    let opt = '-a --binary '
+    if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+    if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+    let arg1 = v:fname_in
+    if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+    let arg1 = substitute(arg1, '!', '\!', 'g')
+    let arg2 = v:fname_new
+    if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+    let arg2 = substitute(arg2, '!', '\!', 'g')
+    let arg3 = v:fname_out
+    if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+    let arg3 = substitute(arg3, '!', '\!', 'g')
+    if $VIMRUNTIME =~ ' '
+        if &sh =~ '\<cmd'
+            if empty(&shellxquote)
+                let l:shxq_sav = ''
+                set shellxquote&
+            endif
+            let cmd = '"' . $VIMRUNTIME . '\diff"'
+        else
+            let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+        endif
+    else
+        let cmd = $VIMRUNTIME . '\diff'
+    endif
+    let cmd = substitute(cmd, '!', '\!', 'g')
+    silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
+    if exists('l:shxq_sav')
+        let &shellxquote=l:shxq_sav
+    endif
+endfunction
+
+if &t_Co > 2 || has("gui_running")
+    syntax on
+    "set hlsearch
+endif
+
+
+
+""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""   Legacy   """""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""
+"  set tenc=utf8
+"  set ut=200
+"  
+"  set wrap
+"  
+"  " set search highlight
+"  set hlsearch "打开高亮搜索
+"  "set nohlsearch "关闭高亮搜索
+"  set helplang=cn
+"  
+"  " show info of cursor
+"  set ruler
+"  
+"  " show cmd on right down
+"  set showcmd
+"  
+"  " search while inputing
+"  set incsearch
+"  
+"  set listchars=tab:>-,trail:-
+
+""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""   GUI   """"""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""
+source $VIMRUNTIME/delmenu.vim
+source $VIMRUNTIME/menu.vim
+set nu!
+set relativenumber
+" 窗口大小
+" set lines=35 columns=140
+" 不显示工具/菜单栏
+set guioptions-=T
+set guioptions-=m
+set guioptions-=L
+set guioptions-=r
+set guioptions-=b
+" 使用内置tab样式而不是gui
+set guioptions-=e
+colorscheme desert
+set renderoptions=type:directx
+set cursorline
+hi CursorLine guibg=NONE gui=underline
+
+" HL时，光标不偏移，直接到顶/底
+set scrolloff=0
+
+set guifont=JetBrains\ Mono\ NL:h16
+
+" 显示行尾空格，tab，等
+set list
+set listchars=eol:↵,tab:<->,trail:␣,extends:…
+
+" 让vim把所有数字当做十进制，0x，00不会被认为是十六进制和八进制
+" set nrformats=
+
+" 缓冲区操作
+nnoremap <silent> [b :bprevious<CR>
+nnoremap <silent> ]b :bnext<CR>
+nnoremap <silent> [B :bfirst<CR>
+nnoremap <slient> ]B :last<CR>
+
+map <F3> ms:call FuckInstancePRS()<CR>:wa<CR>
+
+if has('win32')    
+	au GUIEnter * simalt ~x
+else    
+	au GUIEnter * call MaximizeWindow()
+endif 
+
+function! MaximizeWindow()    
+	silent !wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
+endfunction
+
+autocmd FileType netrw setlocal bufhidden=delete
+
+" Set Alpha
+au GUIEnter * call libcallnr("vimtweak64.dll", "SetAlpha", 234)
+
+" 关闭烦人的警告音和闪屏
+set vb t_vb=
+au GuiEnter * set t_vb=
+
