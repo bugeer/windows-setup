@@ -96,31 +96,6 @@ if &t_Co > 2 || has("gui_running")
 endif
 
 
-
-""""""""""""""""""""""""""""""""""""""""""""
-""""""""""""""   Legacy   """""""""""""""
-""""""""""""""""""""""""""""""""""""""""""""
-"  set tenc=utf8
-"  set ut=200
-"  
-"  set wrap
-"  
-"  " set search highlight
-"  set hlsearch "打开高亮搜索
-"  "set nohlsearch "关闭高亮搜索
-"  set helplang=cn
-"  
-"  " show info of cursor
-"  set ruler
-"  
-"  " show cmd on right down
-"  set showcmd
-"  
-"  " search while inputing
-"  set incsearch
-"  
-"  set listchars=tab:>-,trail:-
-
 """"""""""""""""""""""""""""""""""""""""""""
 """""""""""""""""   GUI   """"""""""""""""""
 """"""""""""""""""""""""""""""""""""""""""""
@@ -163,14 +138,14 @@ nnoremap <slient> ]B :last<CR>
 
 map <F3> ms:call FuckInstancePRS()<CR>:wa<CR>
 
-if has('win32')    
-	au GUIEnter * simalt ~x
-else    
-	au GUIEnter * call MaximizeWindow()
+if has('win32')
+    au GUIEnter * simalt ~x
+else
+    au GUIEnter * call MaximizeWindow()
 endif 
 
-function! MaximizeWindow()    
-	silent !wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
+function! MaximizeWindow()
+    silent !wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
 endfunction
 
 autocmd FileType netrw setlocal bufhidden=delete
