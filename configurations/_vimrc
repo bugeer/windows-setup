@@ -121,11 +121,11 @@ hi CursorLine guibg=NONE gui=underline
 " HL时，光标不偏移，直接到顶/底
 set scrolloff=0
 
-set guifont=JetBrains\ Mono\ NL:h16
+set guifont=JetBrainsMonoNL_NFM:h16
 
 " 显示行尾空格，tab，等
 set list
-set listchars=eol:↵,tab:<->,trail:␣,extends:…
+set listchars=eol:,tab:,trail:┌,extends:↠
 
 " 让vim把所有数字当做十进制，0x，00不会被认为是十六进制和八进制
 " set nrformats=
