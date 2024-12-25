@@ -22,7 +22,7 @@ set winaltkeys=no
 """""""""""  Lang & Encoding  """"""""""""""
 """"""""""""""""""""""""""""""""""""""""""""
 set fileencodings=utf-8,chinese,latin-1,gbk,gb18030,gk2312,cp936
-set encoding=utf-8 
+set encoding=utf-8
 set langmenu=zh_CN
 
 
@@ -35,7 +35,7 @@ set tabstop=4
 set softtabstop=4
 set foldmethod=indent
 set expandtab     " 使用空格代替tab.
-set shiftwidth=4  " 自动缩进的宽度。 
+set shiftwidth=4  " 自动缩进的宽度。
 
 
 """"""""""""""""""""""""""""""""""""""""""""
@@ -136,13 +136,11 @@ nnoremap <silent> ]b :bnext<CR>
 nnoremap <silent> [B :bfirst<CR>
 nnoremap <slient> ]B :last<CR>
 
-map <F3> ms:call FuckInstancePRS()<CR>:wa<CR>
-
 if has('win32')
     au GUIEnter * simalt ~x
 else
     au GUIEnter * call MaximizeWindow()
-endif 
+endif
 
 function! MaximizeWindow()
     silent !wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
